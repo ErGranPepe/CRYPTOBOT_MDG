@@ -1,0 +1,4 @@
+tk
+matplotlib
+requests
+numpy
