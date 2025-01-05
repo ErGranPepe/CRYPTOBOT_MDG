@@ -4,7 +4,7 @@ import tkinter as tk
 from tkinter import ttk
 import matplotlib.pyplot as plt
 
-# Configuración de trading
+
 BINANCE_API_URL = 'https://api.binance.com/api/v3/ticker/price'
 COMISION = 0.001
 INTERVALO_ACTUALIZACION = 10  # en segundos
@@ -17,7 +17,7 @@ precios_historial = {'BTC': []}
 trading_activo = False
 crypto_seleccionada = 'BTC'
 
-# Clase de Juez
+
 class Juez:
     def __init__(self, nombre, indicador, ponderacion=1):
         self.nombre = nombre
@@ -27,10 +27,10 @@ class Juez:
 
     def votar(self, precio_actual, precios_historicos, saldo_dinero, saldo_btc, precio_promedio_compra):
         self.voto = self.indicador(precio_actual, precios_historicos, saldo_dinero, saldo_btc, precio_promedio_compra)
-        self.voto['confianza'] *= self.ponderacion  # Ajuste por ponderación
+        self.voto['confianza'] *= self.ponderacion 
         return self.voto
 
-# Indicadores
+
 def media_movil(precio_actual, precios_historicos, saldo_dinero, saldo_btc, precio_promedio_compra, periodo=10):
     if len(precios_historicos) < periodo:
         return {'accion': 'MANTENER', 'confianza': 5}
@@ -90,7 +90,7 @@ jueces = [
 def obtener_precio_binance(cripto='BTC'):
     try:
         response = requests.get(f'{BINANCE_API_URL}?symbol={cripto}USDT')
-        response.raise_for_status()  # Verifica si hubo un error con la respuesta
+        response.raise_for_status()  
         data = response.json()
         if 'price' in data:
             return float(data['price'])
@@ -146,7 +146,7 @@ def juez_supremo(votos):
     else:
         return {'accion': 'MANTENER', 'confianza': 5}
 
-# Estrategia de trading basada en los jueces
+
 def estrategia_trading(precio_actual):
     votos = []
     for juez in jueces:
@@ -177,7 +177,7 @@ def actualizar_interfaz_jueces(votos, decision_final):
         tabla_votos.set(supremo_iid, "Acción", decision_final['accion'])
         tabla_votos.set(supremo_iid, "Confianza", f"{decision_final['confianza']:.2f}")
 
-# Función para actualizar datos de precios y tomar decisiones de trading
+
 def actualizar_datos():
     if trading_activo:
         precio_actual = obtener_precio(crypto_seleccionada)
@@ -210,11 +210,11 @@ tabla_votos.heading("Acción", text="Acción")
 tabla_votos.heading("Confianza", text="Confianza")
 tabla_votos.pack()
 
-# Inicializar las filas de los jueces en la tabla
+
 for juez in jueces:
     tabla_votos.insert('', 'end', iid=jueces.index(juez), values=(juez.nombre, 'MANTENER', '5.00'))
 
-# Botón para activar el trading
+
 def iniciar_trading():
     global trading_activo
     trading_activo = True

@@ -145,7 +145,6 @@ class CryptoBot:
         votes = []
 
         # Indicadores y decisiones
-        # (El código para los indicadores se mantiene igual)
 
         # Juez Supremo - Optimización de beneficios
         buy_votes = votes.count("COMPRAR")
